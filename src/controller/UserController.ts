@@ -33,8 +33,16 @@ export const createUser = async(req: Request , res: Response) => {
 
 export const updateUser = async(req: Request , res: Response) => {
     const { id } = req.params
-
-    const user = await getRepository(User).update(id , req.body)
+    const { name , email , is_admin , is_active } = req.body
+    if(req.body.password){
+        return res.json({ error: 'cannot update password here' })
+    }
+    const user = await getRepository(User).update(id , {
+        name,
+        email,
+        is_admin,
+        is_active
+    })
     if(user.affected === 1){
         const userUpdated = await getRepository(User).findOne(id)
         return res.json(userUpdated)
