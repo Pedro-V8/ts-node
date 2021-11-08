@@ -16,18 +16,19 @@ export const getProducts = async(req: Request , res: Response) => {
 export const postProducts = async(req: Request , res: Response) => {
     const prod: typeProduct = req.body
     try {
-        if(prod.name === '' || prod.model === ''){
+        if(prod.name === undefined || prod.model === undefined || prod.quantity === undefined){
+            return res.status(400).send({ error: 'Undefined Fields' })        
+        }else if(prod.name === '' || prod.model === ''){
             return res.status(400).send({ error: 'Empty Fields' })
         }else if(+prod.quantity < 0){
             return res.status(400).send({ error: 'Wrong Quantity' })
         }else{
             const product = await getRepository(Product).save(req.body)
             return res.status(200).json(product)
-        }
+        }        
     } catch (error) {
-        return res.status(400).send({ error: 'Error Registration' })
+        return res.status(400).json({ error: 'Error to save Product' })    
     }
-
 }
 
 export const updateProduct = async(req: Request , res: Response) => {

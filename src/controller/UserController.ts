@@ -1,26 +1,56 @@
-import {getRepository} from "typeorm";
-import {NextFunction, Request, Response} from "express";
-import {User} from "../entity/User";
+import {getRepository, Repository} from "typeorm";
+import { hash } from "bcryptjs";
+import { Request, Response } from "express";
+import { User } from "../entity/User";
 
-export class UserController {
+type typeUser = {
+    name: string,
+    email: string,
+    password: string,
+    is_admin: boolean,
+    is_active: boolean
+}
 
-    private userRepository = getRepository(User);
+export const getUsers = async(req: Request , res: Response) => {
+    const users = await getRepository(User).find()
+    return res.status(200).json(users)
+}
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.find();
+export const createUser = async(req: Request , res: Response) => {
+    const userReq: typeUser = req.body
+    const existUser = await getRepository(User).findOne({ email: userReq.email })
+
+    if(existUser) {
+        return res.status(400).json({ error: 'User alredy exists' })
     }
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.findOne(request.params.id);
+    const passwodHash = await hash(userReq.password , 8)
+    userReq.password = passwodHash
+    // console.log(userReq.email) 
+    const user = await getRepository(User).save(userReq);
+    return res.status(200).json({ sucess: true })
+} 
+
+export const updateUser = async(req: Request , res: Response) => {
+    const { id } = req.params
+
+    const user = await getRepository(User).update(id , req.body)
+    if(user.affected === 1){
+        const userUpdated = await getRepository(User).findOne(id)
+        return res.json(userUpdated)
+    }
+    
+    return res.status(404).json({ error: 'User not found' }) 
+}
+
+export const deleteUser = async (req: Request , res: Response) => {
+    const { id } = req.params
+    const user = await getRepository(User).delete(id)
+
+    if(user.affected === 1) {
+        const userDeleted = await getRepository(User).findOne(id)
+        return res.json({ message: 'User Deleted' })
     }
 
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.save(request.body);
-    }
-
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let userToRemove = await this.userRepository.findOne(request.params.id);
-        await this.userRepository.remove(userToRemove);
-    }
-
+    return res.status(404).json({ message: 'User not found' })
 }
