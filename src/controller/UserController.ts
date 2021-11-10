@@ -16,6 +16,13 @@ export const getUsers = async(req: Request , res: Response) => {
     return res.status(200).json(users)
 }
 
+export const getUserById = async(req: Request , res: Response) => {
+    const { id } = req.body
+    const user: typeUser = await getRepository(User).findOne(id)
+    user.password = undefined
+
+    return res.status(200).json(user)
+}
 export const createUser = async(req: Request , res: Response) => {
     const userReq: typeUser = req.body
     const existUser = await getRepository(User).findOne({ email: userReq.email })

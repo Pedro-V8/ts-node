@@ -1,6 +1,6 @@
 import { Router , Request , Response  } from 'express';
 import { getProducts , postProducts , updateProduct , deleteProduct } from './controller/ProductController';
-import { getUsers , createUser , updateUser , deleteUser } from './controller/UserController'
+import { getUsers , getUserById , createUser , updateUser , deleteUser } from './controller/UserController'
 
 const routes = Router();
 
@@ -16,6 +16,7 @@ routes.delete('/products/:id' , deleteProduct)
 
 // Users Routes
 routes.get('/users' , getUsers)
+routes.get('/user/:id' , getUserById)
 routes.post('/users' , createUser)
 routes.put('/users/:id' , updateUser)
 routes.delete('/users/:id' , deleteUser)
