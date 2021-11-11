@@ -1,6 +1,7 @@
 import { Router , Request , Response  } from 'express';
 import { getProducts , postProducts , updateProduct , deleteProduct } from './controller/ProductController';
-import { getUsers , getUserById , createUser , updateUser , deleteUser } from './controller/UserController'
+import { getUsers , getUserById , createUser , updateUser , deleteUser } from './controller/UserController';
+import { authenticate } from './controller/AuthController';
 
 const routes = Router();
 
@@ -20,6 +21,9 @@ routes.get('/user/:id' , getUserById)
 routes.post('/users' , createUser)
 routes.put('/users/:id' , updateUser)
 routes.delete('/users/:id' , deleteUser)
+
+// Auth Route
+routes.get('/auth' , authenticate)
 
 
 export default routes

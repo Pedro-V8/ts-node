@@ -1,18 +1,12 @@
-import {getRepository, Repository} from "typeorm";
+import { getRepository } from "typeorm";
 import { hash } from "bcryptjs";
 import { Request, Response } from "express";
 import { User } from "../entity/User";
-
-type typeUser = {
-    name: string,
-    email: string,
-    password: string,
-    is_admin: boolean,
-    is_active: boolean
-}
+import { typeUser } from '../types/User'
 
 export const getUsers = async(req: Request , res: Response) => {
     const users = await getRepository(User).find()
+    
     return res.status(200).json(users)
 }
 
