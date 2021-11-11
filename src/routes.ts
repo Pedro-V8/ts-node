@@ -23,7 +23,7 @@ routes.put('/users/:id' , updateUser)
 routes.delete('/users/:id' , deleteUser)
 
 // Auth Route
-routes.get('/auth' , authenticate)
+routes.post('/auth' , authenticate)
 
 
 export default routes
