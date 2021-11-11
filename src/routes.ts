@@ -1,5 +1,5 @@
 import { Router , Request , Response  } from 'express';
-import { getProducts , postProducts , updateProduct , deleteProduct } from './controller/ProductController';
+import { getDocuments , postDocuments , updateDocument , deleteDocument } from './controller/DocumentController';
 import { getUsers , getUserById , createUser , updateUser , deleteUser } from './controller/UserController';
 import { authenticate } from './controller/AuthController';
 
@@ -9,11 +9,11 @@ routes.get('/' , (req: Request , res: Response) => {
     return res.json({ ok: 'True'})
 })
 
-// Products Routes
-routes.get('/products' , getProducts)
-routes.post('/products' , postProducts)
-routes.put('/products/:id' , updateProduct)
-routes.delete('/products/:id' , deleteProduct)
+// Document Routes
+routes.get('/documents' , getDocuments)
+routes.post('/documents' , postDocuments)
+routes.put('/documents/:id' , updateDocument)
+routes.delete('/documents/:id' , deleteDocument)
 
 // Users Routes
 routes.get('/users' , getUsers)
