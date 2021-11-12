@@ -15,10 +15,13 @@ export class Document {
     @Column()
     link: string;
 
-    @ManyToOne(() => User , (user: User) => user.documents) 
-    @JoinColumn()
+    @ManyToOne(type => User , users => User) 
+    @JoinColumn()  
     user: User;
 
+    @Column()
+    userId: number;
+ 
     @CreateDateColumn()
     created_at: Date;
 

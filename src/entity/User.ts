@@ -1,4 +1,4 @@
-import { Column , Entity , PrimaryGeneratedColumn , CreateDateColumn  , UpdateDateColumn , OneToMany } from 'typeorm';
+import { Column , Entity , PrimaryGeneratedColumn , CreateDateColumn  , UpdateDateColumn , OneToMany, JoinColumn } from 'typeorm';
 import { Document } from './Document';
 
 @Entity()
@@ -25,10 +25,7 @@ export class User {
     })
     is_active: boolean;
 
-    @OneToMany(() => Document , (document: Document) => document.user , {
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-    })
+    @OneToMany(() => Document , document => document.user , {eager: true})
     documents: Document[];
 
     @CreateDateColumn()
